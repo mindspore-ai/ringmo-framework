@@ -27,10 +27,9 @@ from ringmo_framework.optim import build_optim
 from ringmo_framework.datasets import build_dataset
 from ringmo_framework.trainer import build_wrapper
 from ringmo_framework.parallel_config import build_parallel_config
-from ringmo_framework.tools.helper import count_params
-from ringmo_framework.monitors.callback import build_pretrain_callback
-from ringmo_framework.tools.helper import build_context, str2bool
+from ringmo_framework.tools.helper import count_params, build_context, str2bool
 from ringmo_framework.tools.load_ckpt import load_ckpt
+from ringmo_framework.monitors.callback import build_pretrain_callback
 from register.config import RingMoConfig, ActionDict
 
 
@@ -64,7 +63,7 @@ def main(args):
     # build net
     args.logger.info(".........Build Net..........")
     net = build_model(args)
-    args.logger.info("网络参数量：{} M.".format(count_params(net)))
+    args.logger.info("the params of the network: {} M.".format(count_params(net)))
 
     # build lr
     args.logger.info(".........Build LR Schedule..........")
@@ -77,7 +76,7 @@ def main(args):
     # define model
     args.logger.info(".........Build Train Model..........")
     train_model = build_wrapper(args, net, optimizer, log=args.logger)
-    args.logger.info("模型参数量：{} M.".format(count_params(train_model)))
+    args.logger.info("the params of the network: {} M.".format(count_params(train_model)))
 
     # define Model and begin training
     args.logger.info(".........Starting Init Train Model..........")

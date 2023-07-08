@@ -15,7 +15,7 @@ filepath_prefix: "./autotune"
 autotune_per_step: 10
 
 model:
-  patch_type: 'pi_conv'
+  patch_type: 'pi_conv' #'conv'
   use_lbp: False
 
 finetune_dataset:
