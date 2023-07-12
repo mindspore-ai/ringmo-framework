@@ -79,6 +79,12 @@ def load_pretrained_ckpt(config, model, finetune_ckpt):
 
     if config.model.backbone == 'swin':
         config.logger.info(">>>>>>>>>> Remapping pre-trained keys for SWIN ..........")
+        # Geometric interpolation when pre-trained patch size mismatch with fine-tuned patch size
+        for key in list(checkpoint.keys()):
+            if 'relative_bias.' in key:
+                checkpoint[key.replace('relative_bias.', 'relative_position_bias.')] = checkpoint[
+                    key].clone()
+                checkpoint.pop(key)
         checkpoint = remap_pretrained_keys_swin(model_dict, checkpoint, config.logger)
     elif config.model.backbone == 'vit':
         config.logger.info(">>>>>>>>>> Remapping pre-trained keys for VIT ..........")
@@ -102,7 +108,7 @@ def remove_encoder_keys(model_dict, logger):
 
 def remap_pretrained_keys_swin(state_dict, checkpoint_model, logger):
     """remap pretrained keys swin"""
-    # Geometric interpolation when pre-trained patch size mismatch with fine-tuned patch size
+
     all_keys = list(checkpoint_model.keys())
     for key in all_keys:
         if "relative_position_bias_table" in key:
